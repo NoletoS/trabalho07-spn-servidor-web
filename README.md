@@ -11,4 +11,5 @@ Modelo de rede de Petri estocástica generalizada com chegadas Poisson, serviço
 - estacionario.csv: probabilidade estacionária pi para cada marcação tangível.
 - graficos.py e diagrama.py: geração dos gráficos, da tabela LaTeX e do diagrama. Dependem de Pillow.
 
-Para reproduzir em Jupyter, mantenha o notebook junto de avaliar.py e cenarios.csv na mesma pasta e execute todas as células. A avaliação também pode ser executada com `python avaliar.py`. Para gerar as figuras e a tabela, execute `python graficos.py` e `python diagrama.py`. Os arquivos visuais são escritos na pasta vizinha overleaf/figuras.
+Para reproduzir em Jupyter, mantenha o notebook junto de avaliar.py e cenarios.csv na mesma pasta e execute todas as células. A avaliação também pode ser executada com `python avaliar.py`. Para gerar as figuras e a tabela, execute `python graficos.py` e `python diagrama.py`. Os scripts escrevem as figuras e a tabela em artefatos/ quando usados no repositório, ou no projeto LaTeX quando usados no pacote completo.
+

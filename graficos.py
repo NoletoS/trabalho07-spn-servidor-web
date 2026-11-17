@@ -5,7 +5,9 @@ from math import ceil, log10
 from PIL import Image, ImageDraw, ImageFont
 
 root = Path(__file__).resolve().parent
-figures = root.parent / "overleaf" / "figuras"
+article = root.parent / "overleaf"
+destination = article if (article / "main.tex").is_file() else root / "artefatos"
+figures = destination / "figuras"
 figures.mkdir(parents=True, exist_ok=True)
 with (root / "resultados.csv").open(encoding="utf-8", newline="") as file:
     data = list(DictReader(file))
@@ -80,10 +82,11 @@ for group, key, title, metrics in (
 ):
     plot(group, [row for row in data if row["id"].startswith(group)], key, title, metrics)
 
-with (root.parent / "overleaf" / "tabela.tex").open("w", encoding="utf-8") as file:
+with (destination / "tabela.tex").open("w", encoding="utf-8") as file:
     for row in data:
         fields = [row[key] for key in ("id", "lambda", "c", "B", "K")]
         fields.extend(num(row[key], 3 if key == "DP_pct" else 2)
                       for key in ("TP", "MRT_ms", "MQT_ms", "U_pct", "DP_pct"))
         file.write(" & ".join(fields) + r" \\" + "\n")
+
 
