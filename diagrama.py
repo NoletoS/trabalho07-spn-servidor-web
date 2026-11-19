@@ -42,5 +42,15 @@ for x, top, bottom, label, tx, ty in [
     d.text((tx,ty),label,font=font(29,True),fill=INK,anchor="mt")
 d.text((247,373),"se Vagas = 0", font=font(25), fill=INK)
 d.text((1102,228),"Saída",font=font(30,True),fill=INK,anchor="lm")
+base = im
+im = Image.new("RGB", (1380, 540), "white")
+im.paste(base, (180, 0))
+d = ImageDraw.Draw(im)
+arrow((113, 230), (233, 230))
+arrow((245, 184), (245, 133), (70, 133), (70, 185))
+d.ellipse((27, 187, 113, 273), fill="white", outline=BLUE, width=6)
+d.ellipse((63, 223, 77, 237), fill=INK)
+d.text((70, 283), "Fonte", font=font(30, True), fill=INK, anchor="mt")
 im.save(figures / "rede.png")
+
 

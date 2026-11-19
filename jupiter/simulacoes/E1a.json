@@ -1,0 +1,416 @@
+{
+  "request": {
+    "request_id": "spn_E1a_9c70f37d2386",
+    "model_type": "spn",
+    "execution_type": "spn_stationary_simulation",
+    "model": {
+      "modelName": "Servidor web E1a",
+      "places": [
+        {
+          "id": "p1",
+          "name": "Fonte",
+          "x": 90,
+          "y": 240,
+          "initialMarking": 1,
+          "stringMarking": "1",
+          "initialStringMarking": "1"
+        },
+        {
+          "id": "p2",
+          "name": "Entrada",
+          "x": 360,
+          "y": 240,
+          "initialMarking": 0,
+          "stringMarking": "0",
+          "initialStringMarking": "0"
+        },
+        {
+          "id": "p3",
+          "name": "Fila",
+          "x": 630,
+          "y": 240,
+          "initialMarking": 0,
+          "stringMarking": "0",
+          "initialStringMarking": "0"
+        },
+        {
+          "id": "p4",
+          "name": "Ocupados",
+          "x": 900,
+          "y": 240,
+          "initialMarking": 0,
+          "stringMarking": "0",
+          "initialStringMarking": "0"
+        },
+        {
+          "id": "p5",
+          "name": "Livres",
+          "x": 765,
+          "y": 400,
+          "initialMarking": 2,
+          "stringMarking": "C",
+          "initialStringMarking": "C"
+        },
+        {
+          "id": "p6",
+          "name": "Vagas",
+          "x": 510,
+          "y": 80,
+          "initialMarking": 10,
+          "stringMarking": "K",
+          "initialStringMarking": "K"
+        }
+      ],
+      "definitions": [
+        {
+          "id": "def0",
+          "name": "LAMBDA",
+          "type": "DOUBLE",
+          "value": "40"
+        },
+        {
+          "id": "def1",
+          "name": "C",
+          "type": "INTEGER",
+          "value": "2"
+        },
+        {
+          "id": "def2",
+          "name": "B",
+          "type": "INTEGER",
+          "value": "8"
+        },
+        {
+          "id": "def3",
+          "name": "MU",
+          "type": "DOUBLE",
+          "value": "60"
+        },
+        {
+          "id": "def4",
+          "name": "K",
+          "type": "INTEGER",
+          "value": "10"
+        }
+      ],
+      "rewardMeasures": [
+        {
+          "id": "rm0",
+          "name": "TP",
+          "expression": "E{#Ocupados} * MU"
+        },
+        {
+          "id": "rm1",
+          "name": "MRT_ms",
+          "expression": "1000 * (E{#Fila} + E{#Ocupados}) / (E{#Ocupados} * MU)"
+        },
+        {
+          "id": "rm2",
+          "name": "MQT_ms",
+          "expression": "1000 * E{#Fila} / (E{#Ocupados} * MU)"
+        },
+        {
+          "id": "rm3",
+          "name": "U_pct",
+          "expression": "100 * E{#Ocupados} / C"
+        },
+        {
+          "id": "rm4",
+          "name": "DP_pct",
+          "expression": "100 * P{#Vagas = 0}"
+        },
+        {
+          "id": "rm5",
+          "name": "MPT_ms",
+          "expression": "1000 / MU"
+        }
+      ],
+      "transitions": [
+        {
+          "id": "t1",
+          "name": "Chegar",
+          "x": 225,
+          "y": 240,
+          "labelX": 225,
+          "labelY": 285,
+          "type": "TIMED",
+          "firingPolicy": "SINGLE_SERVER",
+          "raceType": "RACE_WITH_ENABLING_MEMORY",
+          "priority": 1,
+          "inputArcs": [
+            {
+              "type": "INPUT",
+              "place": "Fonte",
+              "multiplicity": 1,
+              "weight": 1
+            }
+          ],
+          "outputArcs": [
+            {
+              "type": "OUTPUT",
+              "place": "Fonte",
+              "multiplicity": 1,
+              "weight": 1
+            },
+            {
+              "type": "OUTPUT",
+              "place": "Entrada",
+              "multiplicity": 1,
+              "weight": 1
+            }
+          ],
+          "inhibitorArcs": [],
+          "distribution": {
+            "type": "exponential",
+            "parameters": {
+              "Mean delay": "1 / LAMBDA"
+            }
+          }
+        },
+        {
+          "id": "t2",
+          "name": "Admitir",
+          "x": 495,
+          "y": 240,
+          "labelX": 495,
+          "labelY": 285,
+          "type": "IMMEDIATE",
+          "firingPolicy": "SINGLE_SERVER",
+          "raceType": "RACE_WITH_ENABLING_MEMORY",
+          "priority": 1,
+          "inputArcs": [
+            {
+              "type": "INPUT",
+              "place": "Entrada",
+              "multiplicity": 1,
+              "weight": 1
+            },
+            {
+              "type": "INPUT",
+              "place": "Vagas",
+              "multiplicity": 1,
+              "weight": 1
+            }
+          ],
+          "outputArcs": [
+            {
+              "type": "OUTPUT",
+              "place": "Fila",
+              "multiplicity": 1,
+              "weight": 1
+            }
+          ],
+          "inhibitorArcs": [],
+          "weight": 1
+        },
+        {
+          "id": "t3",
+          "name": "Descartar",
+          "x": 360,
+          "y": 390,
+          "labelX": 360,
+          "labelY": 435,
+          "type": "IMMEDIATE",
+          "firingPolicy": "SINGLE_SERVER",
+          "raceType": "RACE_WITH_ENABLING_MEMORY",
+          "priority": 1,
+          "inputArcs": [
+            {
+              "type": "INPUT",
+              "place": "Entrada",
+              "multiplicity": 1,
+              "weight": 1
+            }
+          ],
+          "outputArcs": [],
+          "inhibitorArcs": [
+            {
+              "type": "INHIBITOR",
+              "place": "Vagas",
+              "multiplicity": 1,
+              "weight": 1
+            }
+          ],
+          "weight": 1
+        },
+        {
+          "id": "t4",
+          "name": "Iniciar",
+          "x": 765,
+          "y": 240,
+          "labelX": 765,
+          "labelY": 285,
+          "type": "IMMEDIATE",
+          "firingPolicy": "SINGLE_SERVER",
+          "raceType": "RACE_WITH_ENABLING_MEMORY",
+          "priority": 1,
+          "inputArcs": [
+            {
+              "type": "INPUT",
+              "place": "Fila",
+              "multiplicity": 1,
+              "weight": 1
+            },
+            {
+              "type": "INPUT",
+              "place": "Livres",
+              "multiplicity": 1,
+              "weight": 1
+            }
+          ],
+          "outputArcs": [
+            {
+              "type": "OUTPUT",
+              "place": "Ocupados",
+              "multiplicity": 1,
+              "weight": 1
+            }
+          ],
+          "inhibitorArcs": [],
+          "weight": 1
+        },
+        {
+          "id": "t5",
+          "name": "Concluir",
+          "x": 1035,
+          "y": 240,
+          "labelX": 1035,
+          "labelY": 285,
+          "type": "TIMED",
+          "firingPolicy": "INFINITY_SERVER",
+          "raceType": "RACE_WITH_ENABLING_MEMORY",
+          "priority": 1,
+          "inputArcs": [
+            {
+              "type": "INPUT",
+              "place": "Ocupados",
+              "multiplicity": 1,
+              "weight": 1
+            }
+          ],
+          "outputArcs": [
+            {
+              "type": "OUTPUT",
+              "place": "Livres",
+              "multiplicity": 1,
+              "weight": 1
+            },
+            {
+              "type": "OUTPUT",
+              "place": "Vagas",
+              "multiplicity": 1,
+              "weight": 1
+            }
+          ],
+          "inhibitorArcs": [],
+          "distribution": {
+            "type": "exponential",
+            "parameters": {
+              "Mean delay": "1 / MU"
+            }
+          }
+        }
+      ]
+    },
+    "options": {
+      "simulation_time": 1500,
+      "warmup_time": 75,
+      "confidence_level": 0.95,
+      "max_relative_error": 0.05,
+      "sampling_points": 100,
+      "seed": 7107,
+      "max_events": 10000000,
+      "parallelism": 2,
+      "repetitions": 32,
+      "timeout_ms": 70000
+    }
+  },
+  "response": {
+    "request_id": "spn_E1a_9c70f37d2386",
+    "status": "ok",
+    "engine": "newengine-rust",
+    "model_type": "spn",
+    "execution_type": "spn_stationary_simulation",
+    "errors": [],
+    "result": {
+      "metrics": {
+        "DP_pct": 0.0016634648038201163,
+        "MPT_ms": 16.666666666666682,
+        "MQT_ms": 2.0857039098280534,
+        "MRT_ms": 18.752370576494737,
+        "TP": 40.017466127662864,
+        "U_pct": 33.34788843971909
+      },
+      "statistics": {
+        "DP_pct": {
+          "mean": 0.0016634648038201163,
+          "min": 0.0,
+          "max": 0.011244515983419166,
+          "standard_deviation": 0.002270181126370096,
+          "samples": 32,
+          "confidence_lower": 0.0008769032266255815,
+          "confidence_upper": 0.002450026381014651,
+          "half_width": 0.0007865615771945348
+        },
+        "MPT_ms": {
+          "mean": 16.666666666666682,
+          "min": 16.666666666666245,
+          "max": 16.666666666667165,
+          "standard_deviation": 1.7874160482646248e-13,
+          "samples": 32,
+          "confidence_lower": 16.66666666666662,
+          "confidence_upper": 16.666666666666742,
+          "half_width": 6.192954252394075e-14
+        },
+        "MQT_ms": {
+          "mean": 2.0857039098280534,
+          "min": 1.9491192251846774,
+          "max": 2.185603647715638,
+          "standard_deviation": 0.054515658789091426,
+          "samples": 32,
+          "confidence_lower": 2.0668155832267705,
+          "confidence_upper": 2.1045922364293363,
+          "half_width": 0.018888326601282982
+        },
+        "MRT_ms": {
+          "mean": 18.752370576494737,
+          "min": 18.615785891851406,
+          "max": 18.852270314382192,
+          "standard_deviation": 0.05451565878913629,
+          "samples": 32,
+          "confidence_lower": 18.733482249893438,
+          "confidence_upper": 18.771258903096037,
+          "half_width": 0.01888832660129853
+        },
+        "TP": {
+          "mean": 40.017466127662864,
+          "min": 39.50960404023098,
+          "max": 40.52013451714784,
+          "standard_deviation": 0.2400544656580926,
+          "samples": 32,
+          "confidence_lower": 39.934293196249,
+          "confidence_upper": 40.10063905907673,
+          "half_width": 0.0831729314138605
+        },
+        "U_pct": {
+          "mean": 33.34788843971909,
+          "min": 32.92467003352657,
+          "max": 33.766778764289604,
+          "standard_deviation": 0.20004538804844482,
+          "samples": 32,
+          "confidence_lower": 33.278577663540865,
+          "confidence_upper": 33.41719921589732,
+          "half_width": 0.06931077617822898
+        }
+      }
+    },
+    "meta": {
+      "elapsed_ms": 3548,
+      "repetitions": 32,
+      "events_processed": 7683058,
+      "precision_bits": 256,
+      "numeric_policy": "stable_f64",
+      "deterministic_reduction": false
+    }
+  }
+}

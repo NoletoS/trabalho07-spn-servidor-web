@@ -1,15 +1,9 @@
-# Desempenho de um servidor web com fila limitada
+# Trabalho 07 | Desempenho de um servidor web
 
-Modelo de rede de Petri estocástica generalizada com chegadas Poisson, serviço exponencial em paralelo e limite de admissão. Os números são a avaliação estacionária de um cenário hipotético, calculada em Jupyter Notebook 7.6.5.
+A avaliação do artigo foi executada no **Jupiter Analytics 1.17.0**. Consulte a [pasta Jupiter](jupiter/) para baixar os modelos, as respostas do motor, os intervalos de confiança e os CSVs dos 14 cenários. Os gráficos do artigo estão em [figuras](figuras/).
 
-## Arquivos
+Para regenerar os gráficos a partir das saídas do Jupiter, defina a variável SPN_RESULTADOS_CSV com o caminho para jupiter/resultados.csv e execute python graficos.py. O script usa Pillow. O diagrama pode ser regenerado com python diagrama.py usando a mesma variável.
 
-- modelo_spn.ipynb: notebook executado, com a tabela e a seleção por metas.
-- avaliar.py: regras de disparo, enumeração de marcações, balanço e cálculo das métricas.
-- cenarios.csv: 14 configurações E1–E4. As colunas lambda e mu são taxas em requisições por segundo.
-- resultados.csv: seis métricas por cenário. Tempos em milissegundos, utilização e descarte em porcentagem.
-- estacionario.csv: probabilidade estacionária pi para cada marcação tangível.
-- graficos.py e diagrama.py: geração dos gráficos, da tabela LaTeX e do diagrama. Dependem de Pillow.
+## Referência analítica
 
-Para reproduzir em Jupyter, mantenha o notebook junto de avaliar.py e cenarios.csv na mesma pasta e execute todas as células. A avaliação também pode ser executada com `python avaliar.py`. Para gerar as figuras e a tabela, execute `python graficos.py` e `python diagrama.py`. Os scripts escrevem as figuras e a tabela em artefatos/ quando usados no repositório, ou no projeto LaTeX quando usados no pacote completo.
-
+O notebook e os CSVs na raiz registram a conferência matemática do modelo. As estimativas experimentais apresentadas no artigo estão na pasta jupiter/.

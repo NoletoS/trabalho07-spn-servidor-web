@@ -1,15 +1,17 @@
-"""Gera os gráficos e a tabela LaTeX a partir do CSV avaliado no notebook."""
+"""Gera os gráficos e a tabela LaTeX a partir do CSV da avaliação de desempenho."""
 from pathlib import Path
 from csv import DictReader
 from math import ceil, log10
 from PIL import Image, ImageDraw, ImageFont
+import os
 
 root = Path(__file__).resolve().parent
 article = root.parent / "overleaf"
 destination = article if (article / "main.tex").is_file() else root / "artefatos"
 figures = destination / "figuras"
 figures.mkdir(parents=True, exist_ok=True)
-with (root / "resultados.csv").open(encoding="utf-8", newline="") as file:
+csv_path = Path(os.environ.get("SPN_RESULTADOS_CSV", root / "resultados.csv"))
+with csv_path.open(encoding="utf-8", newline="") as file:
     data = list(DictReader(file))
 
 INK = "#182b3a"
@@ -88,5 +90,6 @@ with (destination / "tabela.tex").open("w", encoding="utf-8") as file:
         fields.extend(num(row[key], 3 if key == "DP_pct" else 2)
                       for key in ("TP", "MRT_ms", "MQT_ms", "U_pct", "DP_pct"))
         file.write(" & ".join(fields) + r" \\" + "\n")
+
 
 
